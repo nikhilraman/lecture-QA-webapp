@@ -1,0 +1,1 @@
+/* Main JavaScript file for the project. Sets the route handlers. */
