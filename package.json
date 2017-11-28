@@ -1,0 +1,37 @@
+{
+  "name": "cis197-Final-Project",
+  "version": "1.0.0",
+  "description": "Ephemeral Piazza, Final Project for CIS 197",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Nikhil Raman",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "cookie-session": "^2.0.0-alpha.1",
+    "ejs": "*",
+    "eslint": "^2.3.0",
+    "express": "^4.13.3",
+    "lodash": "^4.6.1",
+    "node-uuid": "^1.4.3",
+    "seeder": "^0.2.1",
+    "socket.io": "^1.7.2",
+    "socket.io-client": "^1.7.3",
+    "aws-sdk": "*",
+    "async": "*",
+    "lru-cache": "*"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "express-session": "^1.11.3",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-zip": "^3.0.2",
+    "node-mocks-http": "^1.4.4",
+    "proxyquire": "^1.7.1",
+    "sinon": "^1.16.1",
+    "supertest": "^1.1.0"
+  }
+}

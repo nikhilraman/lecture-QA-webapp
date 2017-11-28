@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    body { 
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: beige;
+    }
+    .login-area { 
+      max-width: 330px;
+      margin: 0 auto;
+      //background-color: azure;
+    }
+    .login-area .form-control { 
+      margin-bottom: 10px;
+    }
+    .sign-up-area { 
+      max-width: 330px;
+      margin: 0 auto; 
+    }
+    footer { 
+      padding-top: 40px;
+      max-width: 330px;
+      margin: 0 auto; 
+    }
+  </style>
+</head>
+<body>
+  <div class="login-area">
+  <h2>User Login</h2>
+    <form action="/checklogin" method="post">
+      <p>Username<br>
+        <input type="text" name="username" class="form-control">
+        <% if (usernameError != null) { %>
+        <br><span style="color:red"><%= usernameError %></span>
+        <% } %>
+      </p>
+      <p>Password<br>
+        <input type="password" name="password" class="form-control">
+        <% if (passwordError != null) { %>
+        <br><span style="color:red"><%= passwordError %></span>
+        <% } %>
+      </p>
+      <p><input type="submit" value="Login"></p>
+    </form>
+  </div>
+  <div style="color:#0000FF" class="sign-up-area">
+    <p><a href="/signup">Sign Up</a></p> 
+  </div>
+  
+  <footer>
+    <p><font color="green">Page Built By: Nikhil Raman (ramann)</p>
+  </footer>
+</body>
+</html>

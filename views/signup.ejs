@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    body { 
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: beige;
+    }
+    .sign-up-area { 
+      max-width: 330px;
+      margin: 0 auto;
+      //background-color: azure;
+    }
+    .sign-up-area .form-control { 
+      margin-bottom: 10px;
+    }
+    footer { 
+      padding-top: 40px;
+      max-width: 330px;
+      margin: 0 auto; 
+    }
+  </style>
+</head>
+<html>
+<body>
+  <div class="sign-up-area">
+    <h1>Sign Up</h1>
+    <form action="/createaccount" method="post">
+      <p>New Username<br>
+        <input type="text" name="username" class="form-control">  
+      </p>
+      <p>New Password<br>
+        <input type="password" name="password" class="form-control">
+      </p>
+      <p>Full Name<br>
+        <input type="text" name="fullname" class="form-control">
+      </p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+    <% if (error != null) { %>
+    <div><font color="red">Error: <%= error %></div>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+/* API for interacting with the lectures table */
