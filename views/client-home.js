@@ -25,10 +25,19 @@ $(document).ready(function () {
     return html;
   };
 
+  window.makeQuestionAnswered = function (question) {
+    var html = '<div data-question-id="' + question.id + '" class="question"><h1>Question ' + '<span class="qid">' + question.id + '</span>' + '</h1><p class="the-question">' +
+      question.text + '</p><br><p>Asked by Socket user ID: <span class="socket-user">' +
+      question.author + '</p></div><div class="answer"><h1>Answer</h1><p>' + question.answer +
+      '</p><br><p>Answered by Socket user ID: <span class="socket-user">' + question.answerer + '</p></div>';
+    return html;
+  };
+
   window.makeQuestionPreview = function (question) {
     var html = [
-      '<li data-question-id="' + question.id + '" class="question-preview"><h1><span class="preview-content">' +
-      question.text + '</span></h1><p><em>Author: ' + question.author + '</em></p>'
+      '<li id="' + question.id + '" class="question-preview"><h1><span class="preview-content">' +
+      question.text + '</span></h1><p><em>Author: ' + question.author + 
+      '</em></p><p><button class="btn btn-default votes" id="upvote">Up</button><button class="btn btn-default votes" id="downvote">Down</button><span>Votes: </span><span class="vote-number">' + question.votes + '</span></p></li>'
     ];
     html.join('');
     return html;
@@ -68,15 +77,16 @@ $(document).ready(function () {
     $('.question-list').prepend(html);
   });
 
-  $('.question-list').on('click', '.question-preview', function () {
-    var $el = $(this);
-    var id = $el.attr('data-question-id');
-    window.socket.emit('get_question_info', Number(id));
-  });
+  
 
   window.socket.on('question_info', function (question) { 
     if (question != null) { 
-      var html = window.makeQuestion(question); 
+      var html = '';
+      if (question.answerer) { 
+        html = window.makeQuestionAnswered(question);
+      } else { 
+        html = window.makeQuestion(question); 
+      }
       $('.question-view').html(html);
     }
   }); 
@@ -95,13 +105,62 @@ $(document).ready(function () {
     parent.find('#answer').val(textEntered); 
   });
 
+
+
+  $('.question-list').on('click', '.question-preview', function () {
+    console.log('clicked');
+    var $el = $(this);
+    var id = $el.attr('id');
+    window.socket.emit('get_question_info', Number(id));
+  });
+
   window.socket.on('answer_added', function (question) { 
     var currentID = $('.question-view').find('.question').attr('data-question-id');
     if (Number(currentID) === question.id) { 
-      var html = window.makeQuestion(question); 
+      var html = '';
+      console.log('Preparing Answer!!');
+      if (question.answerer) { 
+        html = window.makeQuestionAnswered(question);
+      } else { 
+        html = window.makeQuestion(question); 
+      }
       $('.question-view').html(html);
     }
   });
+
+  $('.question-list').on('click', '#upvote', function (event) { 
+    event.stopPropagation();
+    console.log('Upvoted!!');
+    var $parent = $(this).parent().parent();
+    var id = $parent.attr('id');
+    console.log('Found id: ' + id);
+    window.socket.emit('upvote', Number(id));
+  });
+
+  window.socket.on('increase_votes', function(id) { 
+    var $elt = $('.question-list').find( ("#" + id + " .vote-number") ); 
+    var oldVal = $elt.text(); 
+    var newVal = 1 + Number(oldVal);
+    $elt.text(newVal);
+  }); 
+
+  $('.question-list').on('click', '#downvote', function (event) { 
+    event.stopPropagation();
+    console.log('Downvoted!!');
+    var $parent = $(this).parent().parent();
+    var id = $parent.attr('id');
+    console.log('Found id: ' + id);
+    window.socket.emit('downvote', Number(id));
+  });
+
+  window.socket.on('decrease_votes', function(id) { 
+    console.log('Decreasing vote nums!');
+    var $elt = $('.question-list').find( ("#" + id + " .vote-number") ); 
+    var oldVal = $elt.text();
+    console.log(Number(oldVal)); 
+    var newVal = (Number(oldVal) - 1) + "";
+    $elt.text(newVal);
+  }); 
 
 });
 

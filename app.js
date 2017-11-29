@@ -64,7 +64,8 @@ socketServer.on('connection', function (socket) {
       text: question.text,
       answer: '',
       author: socket.id,
-      id: idCounter
+      id: idCounter,
+      votes: 0
     };
     questions[idCounter] = newQuestion; 
     idCounter++;
@@ -86,7 +87,17 @@ socketServer.on('connection', function (socket) {
       console.log('Cant retrieve proper question!');
     }
     question.answer = questionUpdate.answer; 
-    socket.broadcast.emit('answer_added', question);
+    question.answerer = socket.id;
+    socket.emit('answer_added', question);
+    //socket.broadcat.emit
+  });
+
+  socket.on('upvote', function (id) { 
+    socket.emit('increase_votes', id);
+  });
+
+  socket.on('downvote', function (id) { 
+    socket.emit('decrease_votes', id);
   });
 
 

@@ -73,3 +73,13 @@
   color: #FFF;
   font-weight: bold;
 }
+
+.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+
+.votes { 
+    margin:5px;
+}
