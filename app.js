@@ -17,6 +17,8 @@ var bodyParser = require('body-parser');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
 var qaRouter = require('./routes/questions');
+var startRouter = require('./routes/start');
+var logoutRouter = require('./routes/logout');
 
 /********************** Logical Code Below ***********************/
 
@@ -47,6 +49,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', loginRouter);
 app.use('/', signupRouter);
 app.use('/', qaRouter);
+app.use('/', startRouter);
+app.use('/', logoutRouter);
 
 
 var questions = {};

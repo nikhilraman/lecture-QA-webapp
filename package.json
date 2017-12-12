@@ -19,9 +19,7 @@
     "seeder": "^0.2.1",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.3",
-    "aws-sdk": "*",
-    "async": "*",
-    "lru-cache": "*"
+    "vogels": "^2.2.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",

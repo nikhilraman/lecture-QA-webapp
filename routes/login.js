@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var userDB = require('../db/users.js');
+var userDB = require('../db/users_ops.js');
 
 router.get('/', function (req, res) { 
   res.render('login.ejs', {
@@ -32,7 +32,9 @@ router.post('/checklogin', function (req, res) {
   }
   /* Give appropriate feedback if username/password is invalid. 
    * Otherwise, redirect to the restaurants page. */
-  userDB.get(username, function (data, err) { 
+  userDB.lookup(username, function (err, data) { 
+    console.log('Data received!!!:');
+    console.log(data);
     if (err) { 
       res.redirect('/?uError=' + err);	
     } else if (data === null) {
@@ -41,7 +43,7 @@ router.post('/checklogin', function (req, res) {
       if (password === data.password) { 
         req.session.isLoggedIn = true;
         req.session.username = username;
-        res.redirect('/home');
+        res.redirect('/start');
       }
       else {
         res.redirect('/?pError=Invalid+Password');

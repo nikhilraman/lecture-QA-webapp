@@ -1,0 +1,11 @@
+#######
+
+
+#####
+
+config.json
+.DS_Store
+routes/.DS_Store
+views/.DS_Store
+db/.DS_Store
+node_modules/*

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
+  <script src="/public/js/jquery.min.js"></script>
+  <script src="/public/js/bootstrap.min.js"></script>
+  <script src="/views/client-start.js"></script> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    body { 
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: beige;
+    }
+    .login-area { 
+      max-width: 330px;
+      margin: 0 auto;
+      //background-color: azure;
+    }
+    .login-area .form-control { 
+      margin-bottom: 10px;
+    }
+    .sign-up-area { 
+      max-width: 330px;
+      margin: 0 auto; 
+    }
+    .column {
+      float: left;
+      width: 50.0%;
+      padding: 100px;
+    }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    } 
+    .row { 
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #course-create-field { 
+      display: none;
+    }
+
+    /*.dropdown {
+      position: relative;
+      display: inline-block;
+    }*/
+
+    .dropdown-btn {
+      background-color: #4CAF50;
+      color: white;
+      //padding: 16px;
+      //font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+    .dropdown-btn:hover, .dropdown-btn:focus {
+      background-color: #3e8e41;
+    }
+
+    .dropdown-content {
+      display: none;
+      //position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      overflow: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .show-content { 
+      display: block;
+    }
+    .welcome { 
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <p><h1 align="center" class="welcome">Welcome to the Start Page!</h1></p>
+  <p><h3 align="center">Get started by selecting an existing session or creating a new one!</h3></p>
+  <div class="row"> 
+    <div class="column"> 
+      <div class="dropdown">
+        <button id="course-dropdown" class="dropdown-btn">Select Course</button>
+        <div id="dropdown-menu" class="dropdown-content">
+          <% if (courses) { %>
+            <% for (var i = 0; i < courses.length; i++) { %>
+              <a href="/home/<%= courses[i].title %>_<%= courses[i].date %>"><%= courses[i].title %> --- <%= courses[i].date %></a>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="column"> 
+      <button id="course-create-btn">New Session</button>
+      <div id="course-create-field" class="login-area">
+        <h3>Create New Course Session</h3>
+        <form action="/checkcourse" method="post">
+          <p>Course Name<br>
+            <input type="text" name="name" value="CIS 197" class="form-control">
+          </p>
+          <p>Date<br>
+            <input type="date" name="date" class="form-control">
+          </p>
+          <p><input type="submit" value="Create"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div align="center" class="sign-up-area">
+    <% if (error) { %>
+    <div><font color="red">Error: <%= error %></div>
+    <% } %>
+  </div>
+  <div align="center" style="color:#0000FF" class="sign-up-area">
+    <p><a href="/logout">Log Out</a></p> 
+  </div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var userDB = require('../db/users.js');
+var userDB = require('../db/users_ops.js');
 
 /* Handler for sign up page. Simply render relevant ejs file and errors*/
 router.get('/signup', function (req, res) {
@@ -22,20 +22,20 @@ router.post('/createaccount', function (req, res) {
     res.redirect('/signup?error=Invalid+Empty+Field');
   } else {
 	  username = username.trim();
-    userDB.exists(username, function (data, err) {
+    userDB.lookup(username, function (err, data) {
       if (err) {
         res.redirect('/signup?error=' + err);
       } else if (data){
         res.redirect('/signup?error=Username+Already+Exists');
       } else {
-        userDB.add(username, {password: password, fullname: fullname}, function (putData, putErr) {
+        userDB.add({username: username, password: password, fullname: fullname}, function (putErr, putData) {
           if (putErr) {
         	  res.redirect('/signup?error=' + putErr);
           }
           else {
             req.session.isLoggedIn = true;
             req.session.username = username;
-            res.redirect('/home');
+            res.redirect('/start');
           }
         });
       }

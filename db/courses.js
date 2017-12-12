@@ -1,17 +1,17 @@
 var Joi = require('Joi');
 var vogels = require('vogels');
 
-var Users = vogels.define('rpp_user', {
-  hashKey : 'username',
+var Courses = vogels.define('rpp_course', {
+  hashKey : 'title',
+  rangeKey: 'date',
   schema : {
-    username : Joi.string(),
-    password : Joi.string(),
-    fullname : Joi.string()
+    title : Joi.string(),
+    date : Joi.string()
   }
 });
 
 var model = {
-  Users: Users
+  Courses: Courses
 };
                                         
 module.exports = model;                                        
