@@ -2,10 +2,12 @@ var vogels = require('vogels');
 vogels.AWS.config.loadFromPath('config.json');
 var qModel = require('./questions');
 var Questions = qModel.Questions;
+var uuidv1 = require('uuid/v1');
 
 
 var test_obj1 = {
   'cid': 'cis197_2017-12-01',
+  'qid': uuidv1(),
   'question': 'Test test test!',
   'author': 'mickey',
   'votes': 0
@@ -13,6 +15,7 @@ var test_obj1 = {
 
 var test_obj2 = {
   'cid': 'cis197_2017-12-01',
+  'qid': uuidv1(),
   'question': 'West west west!',
   'author': 'nikkkkk',
   'votes': 0
@@ -20,6 +23,7 @@ var test_obj2 = {
 
 var test_obj3 = {
   'cid': 'cis197_2017-12-03',
+  'qid': uuidv1(),
   'question': 'Lest lest lest!',
   'author': 'mickey',
   'votes': 0

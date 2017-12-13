@@ -33,7 +33,7 @@ router.post('/checklogin', function (req, res) {
   /* Give appropriate feedback if username/password is invalid. 
    * Otherwise, redirect to the restaurants page. */
   userDB.lookup(username, function (err, data) { 
-    console.log('Data received!!!:');
+    console.log('Login Data found in db!:');
     console.log(data);
     if (err) { 
       res.redirect('/?uError=' + err);	

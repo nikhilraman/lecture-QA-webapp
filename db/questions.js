@@ -6,7 +6,7 @@ var Questions = vogels.define('rpp_question', {
   rangeKey: 'qid', 
   schema : {
     cid: Joi.string(),
-    qid: vogels.types.uuid(),
+    qid: Joi.string(), // generate the uuid when question is added
     question: Joi.string(),
     author: Joi.string(),
     votes: Joi.number(), 

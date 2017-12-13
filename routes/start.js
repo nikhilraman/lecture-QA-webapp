@@ -10,7 +10,7 @@ router.get('/start', function (req, res) {
       if (err) { 
         console.log('Error getting courses!');
       } else if (data) { 
-        console.log('Retrieved course list');
+        console.log('Retrieved course list for start dropdown: ');
         console.log(data);
         res.render('start.ejs', {courses: data, error: (req.query.error ? req.query.error : null)});
       } else { 

@@ -9,70 +9,85 @@ $(document).ready(function () {
 
   window.socket = io(window.socketURL);
 
+  var local_questions = [];
+  var local_cid = '';
+  var local_username = '';
+  var local_info = {};
+
+
   window.socket.on('connect', function () {
     console.log('Connected to server!');
+    $.getJSON('/userinfo', function(info) { 
+      local_username = info.username;
+      local_cid = info.cid;
+      console.log('User info retrieved on client!! username: ' + local_username + ', cid: ' + local_cid);
+      console.log(info);
+      local_info = {cid: local_cid, username: local_username};
+      window.socket.emit('get_questions', local_info);
+    });
   });
+
+  var local_questions = [];
 
   // The below two functions are helper functions you can use to
   // create html from a question object.
   // DO NOT MODIFY these functions - they're meant to help you. :)
   window.makeQuestion = function (question) {
-    var html = '<div data-question-id="' + question.id + '" class="question"><h1>Question ' + '<span class="qid">' + question.id + '</span>' + '</h1><p class="the-question">' +
-      question.text + '</p><br><p>Asked by Socket user ID: <span class="socket-user">' +
+    var html = '<div data-question-id="' + question.qid + '" class="question"><h1><span class="qid" style="font-size:50%;color:gray">Question ID: ' + question.qid + '</span>' + '</h1><p class="the-question">' +
+      question.question + '</p><br><p>Asked by User: <span class="socket-user">' +
       question.author + '</p></div><div class="answer"><h1>Answer</h1><p>' +
       '<div class="form-group"><textarea class="form-control" rows="5" id="answer">' +
-      question.answer + '</textarea></div></p><button class="btn btn-default" id="update-answer">Add Answer</button></div>';
+      '' + '</textarea></div></p><button class="btn btn-default" id="update-answer">Add Answer</button></div>';
     return html;
   };
 
   window.makeQuestionAnswered = function (question) {
-    var html = '<div data-question-id="' + question.id + '" class="question"><h1>Question ' + '<span class="qid">' + question.id + '</span>' + '</h1><p class="the-question">' +
-      question.text + '</p><br><p>Asked by Socket user ID: <span class="socket-user">' +
+    var html = '<div data-question-id="' + question.qid + '" class="question"><h1><span class="qid" style="font-size:50%;color:gray">Question ID: ' + question.qid + '</span>' + '</h1><p class="the-question">' +
+      question.question + '</p><br><p>Asked by Socket user ID: <span class="socket-user">' +
       question.author + '</p></div><div class="answer"><h1>Answer</h1><p>' + question.answer +
-      '</p><br><p>Answered by Socket user ID: <span class="socket-user">' + question.answerer + '</p></div>';
+      '</p><br><p>Answered by User: <span class="socket-user">' + question.answerer + '</p></div>';
     return html;
   };
 
   window.makeQuestionPreview = function (question) {
     var html = [
-      '<li id="' + question.id + '" class="question-preview"><h1><span class="preview-content">' +
-      question.text + '</span></h1><p><em>Author: ' + question.author + 
+      '<li id="' + question.qid + '" class="question-preview"><h1><span class="preview-content">' +
+      question.question + '</span></h1><p><em>Author: ' + question.author + 
       '</em></p><p><button class="btn btn-default votes" id="upvote">Up</button><button class="btn btn-default votes" id="downvote">Down</button><span>Votes: </span><span class="vote-number">' + question.votes + '</span></p></li>'
     ];
     html.join('');
     return html;
   };
 
-  // handler to hide the add question modal when the 'close' button is clicked.
+  /* handler to hide the add question modal when the 'close' button is clicked. */
   $('#closeModal').on('click', function () {
     $('#questionModal').modal('hide');
     console.log('QUESTION MODAL CLOSED!!');
   });
 
-  // You will now need to implement both socket handlers,
-  // as well as click handlers. 
-
+  /* handler for new questions */
   $('#submitQuestion').on('click', function () { 
     console.log('QUESTION SUBMITTED!!');
     var textEntered = $('#question-text').val(); 
     // if len > 0 only? 
     if (textEntered.length > 0) { 
       console.log('Emitting message!');
-      window.socket.emit('add_new_question', { text: textEntered});
+      window.socket.emit('add_new_question', { question: textEntered, author: local_username, cid: local_cid });
     }
-    
   });
 
   window.socket.on('here_are_the_current_questions', function (questions) { 
-    var keys = Object.keys(questions); 
+    console.log('received questions!');
+    local_questions = questions;
     var $qList = $('.question-list');
-    for (var i = 0; i < keys.length; i++) { 
-      var html = window.makeQuestionPreview(questions[keys[i]]); 
+    for (var i = 0; i < questions.length; i++) { 
+      var html = window.makeQuestionPreview(questions[i]); 
       $qList.prepend(html);
     }
   });
 
   window.socket.on('new_question_added', function (question) { 
+    local_questions.push(question);
     var html = window.makeQuestionPreview(question); 
     $('.question-list').prepend(html);
   });
@@ -91,18 +106,37 @@ $(document).ready(function () {
     }
   }); 
 
+  var displayQuestion = function (question) { 
+    if (question != null) { 
+      var html = '';
+      if (question.answerer) { 
+        html = window.makeQuestionAnswered(question);
+      } else { 
+        html = window.makeQuestion(question); 
+      }
+      $('.question-view').html(html);
+    }
+  }
+
   $('.question-view').on('click', '#update-answer', function () { 
     console.log('Adding answer!!');
     var parent = $(this).parent();
     var textEntered = parent.find('#answer').val();
     var qID = parent.prev().attr('data-question-id'); 
-    var answerO = { 
-      answer: textEntered,
-      id: Number(qID)
-    };
-    console.log(answerO);
-    window.socket.emit('add_answer', answerO);
-    parent.find('#answer').val(textEntered); 
+    // var answerO = { 
+    //   answer: textEntered,
+    //   answerer: local_username,
+    //   cid: local_cid,
+    //   qid: qID
+    // };
+    var myQ = local_questions.find( function (element) {
+      return element.qid === qID;
+    });
+    myQ.answer = textEntered;
+    myQ.answerer = local_username;
+    console.log(myQ);
+    window.socket.emit('add_answer', myQ);
+    parent.find('#answer').val(textEntered); // why am I doing this?
   });
 
 
@@ -111,12 +145,16 @@ $(document).ready(function () {
     console.log('clicked');
     var $el = $(this);
     var id = $el.attr('id');
-    window.socket.emit('get_question_info', Number(id));
+    var myQ = local_questions.find( function (element) {
+      return element.qid === id;
+    });
+    displayQuestion(myQ);
+    //window.socket.emit('get_question_info', Number(id)); // instead of asking server we can use local cache
   });
 
   window.socket.on('answer_added', function (question) { 
     var currentID = $('.question-view').find('.question').attr('data-question-id');
-    if (Number(currentID) === question.id) { 
+    if (currentID === question.qid) { 
       var html = '';
       console.log('Preparing Answer!!');
       if (question.answerer) { 
@@ -126,6 +164,11 @@ $(document).ready(function () {
       }
       $('.question-view').html(html);
     }
+    var myQ = local_questions.find( function (element) {
+      return element.qid === question.qid;
+    });
+    myQ.answer = question.answer;
+    myQ.answerer = question.answerer;
   });
 
   $('.question-list').on('click', '#upvote', function (event) { 
@@ -134,7 +177,7 @@ $(document).ready(function () {
     var $parent = $(this).parent().parent();
     var id = $parent.attr('id');
     console.log('Found id: ' + id);
-    window.socket.emit('upvote', Number(id));
+    window.socket.emit('upvote', {cid: local_cid, qid: id});
   });
 
   window.socket.on('increase_votes', function(id) { 
@@ -142,6 +185,11 @@ $(document).ready(function () {
     var oldVal = $elt.text(); 
     var newVal = 1 + Number(oldVal);
     $elt.text(newVal);
+    // update cache
+    var myQ = local_questions.find( function (element) {
+      return element.qid === id;
+    });
+    myQ.votes = myQ.votes + 1;
   }); 
 
   $('.question-list').on('click', '#downvote', function (event) { 
@@ -150,7 +198,7 @@ $(document).ready(function () {
     var $parent = $(this).parent().parent();
     var id = $parent.attr('id');
     console.log('Found id: ' + id);
-    window.socket.emit('downvote', Number(id));
+    window.socket.emit('downvote', {cid: local_cid, qid: id});
   });
 
   window.socket.on('decrease_votes', function(id) { 
@@ -160,6 +208,11 @@ $(document).ready(function () {
     console.log(Number(oldVal)); 
     var newVal = (Number(oldVal) - 1) + "";
     $elt.text(newVal);
+    // update cache
+    var myQ = local_questions.find( function (element) {
+      return element.qid === id;
+    });
+    myQ.votes = myQ.votes - 1;
   }); 
 
 });

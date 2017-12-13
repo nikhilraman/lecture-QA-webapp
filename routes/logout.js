@@ -5,7 +5,8 @@ var router = express.Router();
 
 
 router.get('/logout', function (req, res) { 
-  req.session.destroy();
+  //req.session.destroy();
+  req.session = null;
   res.redirect('/');
 });
 
