@@ -44,9 +44,6 @@ var generateCookieSecret = function () {
   return 'iamasecret' + uuidv4();
 };
 
-console.log(uuidv4());
-console.log(uuidv4());
-
 /* Get static resources */
 app.use(express.static(__dirname));
 
@@ -57,12 +54,6 @@ app.use(cookieSession({
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use(express.cookieParser());
-// app.use(express.session({secret: generateCookieSecret()}));
-
-// app.use(express.bodyParser());
-// app.use(express.logger("default"));
-
 
 app.use('/', loginRouter);
 app.use('/', signupRouter);
@@ -71,11 +62,9 @@ app.use('/', startRouter);
 app.use('/', logoutRouter);
 app.use('/', userInfoRouter);
 
+
 /********************** Socket.io connection handling below ***********************/
-
-
 var rooms = [];
-
 
 socketServer.on('connection', function (socket) {
   
@@ -129,22 +118,7 @@ socketServer.on('connection', function (socket) {
     });
   });
 
-  // socket.on('get_question_info', function (id) { 
-  //   var requestedQ = questions[id]; 
-  //   if (typeof requestedQ === 'undefined') { 
-  //     socket.emit('question_info', null);
-  //   } else { 
-  //     socket.emit('question_info', requestedQ);
-  //   }
-  // });
-
   socket.on('add_answer', function (questionUpdate) { 
-    // var question = questions[questionUpdate.id];
-    // if (typeof question === 'undefined') { 
-    //   console.log('Cant retrieve proper question!');
-    // }
-    // question.answer = questionUpdate.answer; 
-    // question.answerer = socket.id;
     socketServer.to(questionUpdate.cid).emit('answer_added', questionUpdate);
     /* update db */
     qDB.addAnswer(questionUpdate, function (err, data) { 

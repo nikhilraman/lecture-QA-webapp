@@ -9,7 +9,5 @@ $(document).ready(function () {
 
   $('#course-create-btn').on('click', function () { 
     $('#course-create-field').toggle();
-  })
-
-
+  });
 });

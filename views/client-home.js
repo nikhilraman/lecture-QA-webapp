@@ -53,7 +53,7 @@ $(document).ready(function () {
     var html = [
       '<li id="' + question.qid + '" class="question-preview"><h1><span class="preview-content">' +
       question.question + '</span></h1><p><em>Author: ' + question.author + 
-      '</em></p><p><button class="btn btn-default votes" id="upvote">Up</button><button class="btn btn-default votes" id="downvote">Down</button><span>Votes: </span><span class="vote-number">' + question.votes + '</span></p></li>'
+      '</em></p><p><button class="btn btn-default votes" id="upvote">Upvote</button><button class="btn btn-default votes" id="downvote">Downvote</button><span class="vote-label">Votes: </span><span class="vote-number">' + question.votes + '</span></p></li>'
     ];
     html.join('');
     return html;
@@ -73,6 +73,7 @@ $(document).ready(function () {
     if (textEntered.length > 0) { 
       console.log('Emitting message!');
       window.socket.emit('add_new_question', { question: textEntered, author: local_username, cid: local_cid });
+      $('#question-text').val('');
     }
   });
 
@@ -136,7 +137,7 @@ $(document).ready(function () {
     myQ.answerer = local_username;
     console.log(myQ);
     window.socket.emit('add_answer', myQ);
-    parent.find('#answer').val(textEntered); // why am I doing this?
+    //parent.find('#answer').val(textEntered); // why am I doing this?
   });
 
 

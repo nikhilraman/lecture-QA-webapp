@@ -4,6 +4,8 @@ var vogels = require('vogels');
 vogels.AWS.config.loadFromPath('config.json');
 var coursesModel = require('./courses');
 var Courses = coursesModel.Courses;
+var qDB = require('./questions_ops.js');
+var uuidv1 = require('uuid/v1');
 var _ = require('lodash');
 
 var courses_get_all = function (route_callback) { 
@@ -28,7 +30,19 @@ var courses_add = function (key, value, route_callback) {
     if (err) {
       route_callback(err, null);
     } else if (course) {
-      route_callback(null, course);	
+      qDB.add( key + '_' + value, {
+        qid: uuidv1(), 
+        question: 'Welcome to this Q/A tool for lecture sessions. Add questions using the button above.', 
+        author: 'The RP Project',
+        answer: 'You can also upvote/downvote questions and answer questions!',
+        answerer: 'The RP Team'
+      }, function (err, data) {
+        if (err) { 
+          route_callback(err, null);
+        } else { 
+          route_callback(null, course); 
+        }
+      });
     } else { 
       route_callback(null, null);
     }
