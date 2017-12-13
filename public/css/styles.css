@@ -1,3 +1,59 @@
+.homebar {
+  overflow: hidden;
+  background-color: lightskyblue;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  height: 75px;
+  text-align: center;
+  font-size: 45px;
+}
+
+.home-title { 
+  color: indigo;
+  font-size: xx-large;
+}
+
+.coursebar { 
+  overflow: hidden;
+  background-color: #595959;
+  text-align: center;
+  height: 50px;
+  font-size: 30px;
+}
+
+.coursebar .change-course { 
+  text-align: left;
+  padding-right: 20px;
+  //font-size: 16px;
+  color: white;
+  padding: 14px 16px;
+  font-size: medium;
+}
+
+.dummy { 
+  padding-bottom: 20px;
+}
+
+.coursebar .course-name { 
+  text-align: center;
+  //font-size: 16px;
+  color: aquamarine;
+  padding: 14px 16px;
+  font-size: medium;
+}
+
+.coursebar .logout { 
+  text-align: right;
+  padding-left: 20px;
+  //font-size: 16px;
+  color: white;
+  padding: 14px 16px;
+  font-size: medium;
+}
+
+.coursebar a:hover { 
+  background-color: gainsboro;
+}
+
 .title {
   padding-left: 25px;
   padding-bottom: 10px;

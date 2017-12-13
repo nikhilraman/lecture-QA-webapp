@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style type="text/css">
     body { 
-      padding-top: 40px;
       padding-bottom: 40px;
-      background-color: beige;
+      background-color: mediumaquamarine;
     }
     .login-area { 
+      padding-top: 100px;
       max-width: 330px;
       margin: 0 auto;
       //background-color: azure;
@@ -23,14 +23,19 @@
     }
     footer { 
       padding-top: 40px;
-      max-width: 330px;
+      //max-width: 330px;
       margin: 0 auto; 
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <div>
+    <p><h1 style="color:white;" align="center">Welcome to the RPP Lecture Tool!</h1></p>
+    <p><h5 align="center">Please Login or Sign up!</h5></p>
+  </div>
   <div class="login-area">
-  <h2>User Login</h2>
+    <h2 align="center">User Login</h2>
     <form action="/checklogin" method="post">
       <p>Username<br>
         <input type="text" name="username" class="form-control">
@@ -44,15 +49,15 @@
         <br><span style="color:red"><%= passwordError %></span>
         <% } %>
       </p>
-      <p><input type="submit" value="Login"></p>
+      <p align="center"><input type="submit" value="Login"></p>
     </form>
   </div>
-  <div style="color:#0000FF" class="sign-up-area">
+  <div align="center" style="color:#0000FF" class="sign-up-area">
     <p><a href="/signup">Sign Up</a></p> 
   </div>
   
   <footer>
-    <p><font color="green">Page Built By: Nikhil Raman (ramann)</p>
+    <p><font color="gray">Page Built By: Nikhil Raman, Last Updated 12/12/2017</p>
   </footer>
 </body>
 </html>

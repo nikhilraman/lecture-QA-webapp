@@ -11,33 +11,42 @@
   </head>
   <body>
     <div class="container-fluid">
+      <div class="homebar">
+        <span align="center" class="home-title">Welcome to the Reddit-Piazza Project!</span>
+      </div>
+      <div class="coursebar">
+        <a class="change-course" href="/start">Change Course</a>
+        <span class="course-name">This is the <%= course %> session for <%= date %> :)</span>
+        <a class="logout" href="/logout">Logout</a>
+      </div>
       <div class="row">
         <div class="col-md-12 title">
-          <h1>Reddit-Piazza Lecture Tool</h1>
+          <div class="dummy"></div>
           <button class="btn btn-primary" id="add-question" data-toggle="modal" data-target="#questionModal">Add a question</button>
-
-         <div class="modal fade" id="questionModal">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Create a new Question</h4>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="question-text" class="control-label">Text:</label>
-                    <textarea class="form-control" id="question-text"></textarea>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="submitQuestion" class="btn btn-primary" data-dismiss="modal">Submit Question</button>
+        
+          <div class="modal fade" id="questionModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title" id="exampleModalLabel">Create a new Question</h4>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="question-text" class="control-label">Text:</label>
+                      <textarea class="form-control" id="question-text"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" id="submitQuestion" class="btn btn-primary" data-dismiss="modal">Submit Question</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+
         </div>
       </div>
       <div class="row">
